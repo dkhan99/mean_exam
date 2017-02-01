@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <title></title>
+  </head>
+  <body>
+    <div ng-controller="sessionController as SC">
+
+
+    <h2>Welcome {{SC.session_user.name}}</h2>
+      <a href="/logout">logout</a>
+
+    
+    <div ng-controller="bucketController as BC">
+      <h2>{{BC.error}}</h2>
+      <form >
+        Title<input type="text" ng-model="BC.newbucket.title" placeholder="title">
+        Description:<input type="text" ng-model="BC.newbucket.description" placeholder="description">
+        <label> Tag a user
+        <select ng-model="BC.newbucket.tagger" >
+          <option ng-if = "user._id !== SC.session_user._id" ng-repeat="user in BC.users |filter: { name: '!' + 'SC.session_user.name' }" value="{{user._id}}">{{user.name}}</option>
+        </select>
+        </label>
+        <input type="submit" value="add to list" ng-click="BC.add()">
+      </form>
+      <h1>Before I die I want to:</h1>
+      <ul>
+        <li ng-repeat='bucket in BC.buckets.buckets'><input type="checkbox" ng-model="bucket.checked" ng-change="BC.check(bucket._id)"> {{bucket.user.name}} | {{bucket.title}} - {{bucket.description}}  {{bucket.createdAt|date: 'MMM dd y'}}</li>
+
+      </ul>
+
+      <h2> list of other users (click to view profile) </h2>
+      <table>
+        <tbody>
+          <tr ng-repeat="user in BC.users" 
+            ng-if = "user._id !== SC.session_user._id">
+            <td >
+              
+              <a href="#/dashboard/{{user._id}}/user">{{user.name}}</a>
+
+            </td>
+          </tr>
+        </tbody>
+      </table>
+      </div>
+    </div>
+  </body>
+</html>

@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <title></title>
+  </head>
+  <body>
+    
+    <a href="#/dashboard">home</a>
+    <a href="#/logout">logout</a>
+    <div ng-controller="bucketController as BC">
+     <div ng-controller="sessionController as SC"> 
+        
+      <h3>{{BC.bucketusers.name}}</h3><br>
+
+      <ul>
+        <h4>Done</h4> <br>
+        <li ng-repeat="bucket in BC.bucketusers.buckets | filter:'true'">
+        <input 
+          ng-if = "bucket.user._id === SC.session_user._id || bucket.tagger === SC.session_user._id"
+          type="checkbox" 
+          ng-model="bucket.checked"
+          ng-change="BC.check(bucket._id)">
+
+          {{bucket.user.name}} | {{bucket.title}} - {{bucket.description}}  {{bucket.createdAt|date: 'MMM dd y'}}
+
+          </li>
+      </ul>
+
+      <ul>
+
+        <h4>pending</h4> <br>
+        <li ng-repeat="bucket in BC.bucketusers.buckets | filter:'false'">
+          <input 
+            ng-if = "bucket.user._id === SC.session_user._id || bucket.tagger === SC.session_user._id"
+            type="checkbox" ng-model="bucket.checked"
+            ng-change="BC.check(bucket._id)">
+          {{bucket.user.name}} | {{bucket.title}} - {{bucket.description}}  {{bucket.createdAt|date: 'MMM dd y'}}
+          
+        </li>
+    </ul>
+    </div>
+  </div>
+  </body>
+</html>
